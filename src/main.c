@@ -1,67 +1,51 @@
-#define SDL_MAIN_USE_CALLBACKS 1
+#include <raylib.h>
 
-#include <SDL3/SDL_main.h>
-#include <SDL3/SDL_error.h>
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_init.h>
-#include <SDL3/SDL_pixels.h>
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL_log.h>
-#include <SDL3/SDL_stdinc.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-#define WIN_WIDTH 1080
-#define WIN_HEIGHT 720
+#include <maglass/handle_input.h>
 
-typedef struct
+const char* FILENAME = "screenshot.png";
+
+int main(void)
 {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	int width;
-	int height;
-} AppState;
+	const int current_monitor = GetCurrentMonitor();
+	const int width = GetMonitorWidth(current_monitor);
+	const int height = GetMonitorHeight(current_monitor);
 
-SDL_AppResult SDL_AppInit(void **appstate, int argc, char** argv)
-{
-	AppState* app_state = SDL_malloc(sizeof(AppState));
-	*app_state = (AppState)
-	{ 
-		.width = WIN_WIDTH,
-		.height = WIN_HEIGHT
+	char command[256];
+	snprintf(command, sizeof(command), "grim -t png %s", FILENAME);
+	system(command);
+
+	InitWindow(width, height, "");
+	SetTargetFPS(60);
+	ToggleFullscreen();
+
+	Camera2D cam = 
+	{
+		.offset = (Vector2){(float)width / 2.0f, (float)height / 2.0f},
+		.rotation = 0.0f,
+		.zoom = 1.0f,
 	};
-	*appstate = app_state;
+	Texture2D tex = LoadTexture(FILENAME);
+	Vector2 mous_pos;
 
-	if(!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_CAMERA))
+	while(!WindowShouldClose())
 	{
-		SDL_Log("Couldn't initialize maglass: %s", SDL_GetError());
-		return SDL_APP_FAILURE;
+		mous_pos.x = GetMouseX();
+		mous_pos.y = GetMouseY();
+	
+		handle_keyboard_input(&cam, mous_pos);
+
+		BeginDrawing();
+			ClearBackground(BLACK);
+			BeginMode2D(cam);
+				DrawTexture(tex, 0, 0, WHITE);
+			EndMode2D();
+		EndDrawing();
 	}
-	if(!SDL_CreateWindowAndRenderer("", app_state->width, app_state->height, SDL_WINDOW_FULLSCREEN, &(app_state->window), &(app_state->renderer)))
-	{
-		SDL_Log("Couldn't create window or renderer: %s", SDL_GetError());
-		return SDL_APP_FAILURE;
-	}
-	return SDL_APP_CONTINUE;
-}
 
-SDL_AppResult SDL_AppIterate(void* appstate)
-{
-	AppState* app_state = appstate;
-	SDL_SetRenderDrawColorFloat(app_state->renderer, 0.4f, 0.6f, 1.0f, SDL_ALPHA_OPAQUE_FLOAT);
+	CloseWindow();
 
-	SDL_RenderClear(app_state->renderer);
-	SDL_RenderPresent(app_state->renderer);
-	return SDL_APP_CONTINUE;
-}
-
-SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event)
-{
-	if(event->type == SDL_EVENT_QUIT) return SDL_APP_SUCCESS;
-	return SDL_APP_CONTINUE;
-}
-
-void SDL_AppQuit(void* appstate, SDL_AppResult result)
-{
-	AppState* app_state = appstate;
-	SDL_free(appstate);
-	SDL_Quit();
+	return 0;
 }
