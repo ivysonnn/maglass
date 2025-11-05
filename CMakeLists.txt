@@ -17,6 +17,7 @@ target_include_directories(mag INTERFACE
 add_executable(${CMAKE_PROJECT_NAME}
 	src/main.c
 	src/handle_input.c
+	src/zoom.c
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE 

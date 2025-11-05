@@ -9,21 +9,17 @@ const char* FILENAME = "screenshot.png";
 
 int main(void)
 {
-	const int current_monitor = GetCurrentMonitor();
-	const int width = GetMonitorWidth(current_monitor);
-	const int height = GetMonitorHeight(current_monitor);
-
 	char command[256];
 	snprintf(command, sizeof(command), "grim -t png %s", FILENAME);
 	system(command);
 
-	InitWindow(width, height, "");
+	InitWindow(0, 0, "");
 	SetTargetFPS(60);
 	ToggleFullscreen();
 
 	Camera2D cam = 
 	{
-		.offset = (Vector2){(float)width / 2.0f, (float)height / 2.0f},
+		.offset = (Vector2){0.0f, 0.0f},
 		.rotation = 0.0f,
 		.zoom = 1.0f,
 	};
@@ -36,7 +32,6 @@ int main(void)
 		mous_pos.y = GetMouseY();
 	
 		handle_keyboard_input(&cam, mous_pos);
-
 		BeginDrawing();
 			ClearBackground(BLACK);
 			BeginMode2D(cam);
@@ -46,6 +41,7 @@ int main(void)
 	}
 
 	CloseWindow();
+	remove(FILENAME);
 
 	return 0;
 }
