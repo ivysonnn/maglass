@@ -1,7 +1,7 @@
 #include <maglass/zoom.h>
+#include <maglass/utils/clamp.h>
 #include <raylib.h>
 #include <raymath.h>
-#include <string.h>
 
 void zoom(Camera2D *cam, Vector2 mous_pos, float zoom_factor)
 {
@@ -18,16 +18,5 @@ void zoom(Camera2D *cam, Vector2 mous_pos, float zoom_factor)
 	cam->offset = mous_pos;
 	cam->target = mouseWorldPos;
 
-	fix_zoom(cam, world_rect);
-}
-
-void fix_zoom(Camera2D *cam, Rectangle world_rect)
-{
-	float min_target_x = cam->offset.x / cam->zoom;
-	float max_target_x = world_rect.width - (GetScreenWidth() - cam->offset.x) / cam->zoom;
-	float min_target_y = cam->offset.y / cam->zoom;
-	float max_target_y = world_rect.height - (GetScreenHeight() - cam->offset.y) / cam->zoom;
-
-	cam->target.x = Clamp(cam->target.x, min_target_x, max_target_x);
-	cam->target.y = Clamp(cam->target.y, min_target_y, max_target_y);
+ 	m_clamp(cam, world_rect);
 }

@@ -14,7 +14,7 @@ int main(void)
 	system(command);
 
 	InitWindow(0, 0, "");
-	SetTargetFPS(60);
+	SetTargetFPS(300);
 	ToggleFullscreen();
 
 	Camera2D cam = 

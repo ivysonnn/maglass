@@ -1,5 +1,6 @@
 #include <maglass/handle_input.h>
 #include <maglass/zoom.h>
+#include <maglass/panning.h>
 #include <raylib.h>
 #include <stdbool.h>
 
@@ -29,5 +30,10 @@ void handle_keyboard_input(Camera2D *cam, Vector2 mous_pos)
 	else if(scroll < 0)
 	{
 		zoom(cam, mous_pos, zoom_factor);
+	}
+
+	if(IsMouseButtonDown(MOUSE_RIGHT_BUTTON))
+	{
+		drag_and_move(cam, mous_pos);
 	}
 }

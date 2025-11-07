@@ -18,6 +18,8 @@ add_executable(${CMAKE_PROJECT_NAME}
 	src/main.c
 	src/handle_input.c
 	src/zoom.c
+	src/panning.c
+	src/clamp.c
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE 
