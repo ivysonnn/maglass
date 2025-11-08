@@ -1,3 +1,4 @@
+#include <maglass/spotlight.h>
 #include <maglass/handle_input.h>
 #include <maglass/zoom.h>
 #include <maglass/panning.h>
@@ -7,7 +8,7 @@
 #define ZOOM_IN "in"
 #define ZOOM_OUT "out"
 
-void handle_keyboard_input(Camera2D *cam, Vector2 mous_pos)
+void handle_inputs(Camera2D *cam, Vector2 mous_pos, Spotlight *spotlight)
 { 
 	float scroll = GetMouseWheelMove();
 	float zoom_factor = 0.5f;
@@ -23,11 +24,7 @@ void handle_keyboard_input(Camera2D *cam, Vector2 mous_pos)
 	}
 
 	zoom_factor = 0.2f * scroll;
-	if(scroll > 0)
-	{
-		zoom(cam, mous_pos, zoom_factor);
-	}
-	else if(scroll < 0)
+	if(scroll != 0 && !IsKeyDown(KEY_LEFT_CONTROL))
 	{
 		zoom(cam, mous_pos, zoom_factor);
 	}
@@ -35,5 +32,15 @@ void handle_keyboard_input(Camera2D *cam, Vector2 mous_pos)
 	if(IsMouseButtonDown(MOUSE_RIGHT_BUTTON))
 	{
 		drag_and_move(cam, mous_pos);
+	}
+
+	if(IsKeyPressed(KEY_F))
+	{
+		toggle_spotlight(spotlight);
+	}
+
+	if(spotlight->is_on && IsKeyDown(KEY_LEFT_CONTROL) && scroll != 0)
+	{
+		change_spotlight_radius(spotlight, scroll);
 	}
 }

@@ -20,6 +20,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 	src/zoom.c
 	src/panning.c
 	src/clamp.c
+	src/spotlight.c
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE 
@@ -27,4 +28,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
 	m
 	X11
 	mag
+)
+
+add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_directory
+	${CMAKE_CURRENT_SOURCE_DIR}/assets $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/assets
 )
