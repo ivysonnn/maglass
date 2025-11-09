@@ -1,5 +1,12 @@
 set -e
 
+if command -v pacman &> /dev/null; then
+    sudo pacman -S --needed --noconfirm raylib
+else
+	echo "Unsupported distro."
+	echo "Please install 'raylib' manually using your distribution package manager."
+fi
+
 echo "Creating build folder..."
 rm -rf build
 mkdir build
