@@ -1,7 +1,7 @@
 # MaGlass
 
 ## About
-**MaGlass** is a zoomer based on Tsoding's **[Boomer](asas)** but implemented with C and **[Raylib](https://github.com/raysan5/raylib)**.
+**MaGlass** is a zoomer based on Tsoding's **[Boomer](https://github.com/tsoding/boomer)** but implemented with C and **[Raylib](https://github.com/raysan5/raylib)**.
 
 ## Dependencies
 - **C 11 +**
@@ -12,13 +12,13 @@
 ## Installation
 ### Cloning
 ```bash
-	git clone https://github.com/ivysonnn/maglass
+git clone https://github.com/ivysonnn/maglass
 
-	cd maglass
+cd maglass
 ```
 ### Installing
 There's a Shell Script for doing so.
 ```bash
-	./install.sh
+./install.sh
 ```
 If the installation script doesn't work, you'll have to install the dependencies manually.
