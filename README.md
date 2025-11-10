@@ -18,3 +18,14 @@
 ```bash
 git clone https://github.com/ivysonnn/maglass
 cd maglass
+```
+
+### Installing
+
+There's a Shell Script for doing so.
+
+```bash
+./install.sh
+```
+
+If the installation script doesn't work, you'll have to install the dependencies manually.
